@@ -5,7 +5,6 @@ import java.util.Properties;
 
 import javax.activation.DataHandler;
 import javax.activation.FileDataSource;
-import javax.annotation.Resource;
 import javax.mail.Address;
 import javax.mail.BodyPart;
 import javax.mail.Message;
@@ -19,7 +18,6 @@ import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
 import org.apache.log4j.Logger;
-import org.springframework.stereotype.Service;
 
 import com.sosop.service.mail.auth.Authenticator;
 import com.sosop.service.mail.vo.Mail;
@@ -29,20 +27,22 @@ import com.sosop.service.mail.vo.Mail;
  * @date 2014.9.15
  * @describe send email
  */
-@Service("sendMail")
 public class SendMail {
 
 	private final static Logger LOG = Logger.getLogger(SendMail.class);
 
-	@Resource(name = "mail")
-	private Mail mail;
+	private Properties pro;
+	
+	public SendMail(Properties pro) {
+		super();
+		this.pro = pro;
+	}
 
 	/**
 	 * 文本邮件
 	 * @return
 	 */
-	public boolean sendTextMail() {
-		Properties pro = mail.getPropeties();
+	public boolean sendTextMail(Mail mail) {
 		Session sendMailSession = Session.getDefaultInstance(pro, auth(pro));
 		try {
 			Message mailMessage = new MimeMessage(sendMailSession);
@@ -73,8 +73,7 @@ public class SendMail {
 	 * html 格式文件
 	 * @return
 	 */
-	public boolean sendHtmlMail() {
-		Properties pro = mail.getPropeties();
+	public boolean sendHtmlMail(Mail mail) {
 		Session sendMailSession = Session.getDefaultInstance(pro, auth(pro));
 		sendMailSession.setDebug(true);
 		try {
@@ -114,8 +113,7 @@ public class SendMail {
 	 * 带附件邮件
 	 * @return
 	 */
-	public boolean sendAttach() {
-		Properties pro = mail.getPropeties();
+	public boolean sendAttach(Mail mail) {
 		Session sendMailSession = Session.getDefaultInstance(pro, auth(pro));
 		sendMailSession.setDebug(true);
 		try {
@@ -167,8 +165,8 @@ public class SendMail {
 	 */
 	private Authenticator auth(Properties pro) {
 		Authenticator authenticator = null;
-		if (Boolean.valueOf(pro.getProperty("mail.smtp.auth", "false"))) {
-			authenticator = new Authenticator(pro.getProperty("username"),
+		if (Boolean.valueOf(pro.getProperty("mail.smtp.auth", "true"))) {
+			authenticator = new Authenticator(pro.getProperty("account"),
 					pro.getProperty("password"));
 		}
 		return authenticator;

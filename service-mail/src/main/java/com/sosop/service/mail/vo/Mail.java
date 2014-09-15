@@ -1,7 +1,10 @@
 package com.sosop.service.mail.vo;
 
-import java.util.Properties;
-
+/**
+ * 
+ * @author sosop
+ * @descibe mail类
+ */
 public class Mail {
 
 	private String fromAddress;
@@ -9,16 +12,6 @@ public class Mail {
 	private String subject;
 	private String content;
 	private String[] attachFileNames;
-
-	private Properties propeties;
-
-	public Properties getPropeties() {
-		return propeties;
-	}
-
-	public void setPropeties(Properties propeties) {
-		this.propeties = propeties;
-	}
 
 	public String[] getAttachFileNames() {
 		return attachFileNames;

@@ -17,18 +17,18 @@
 
 	<context:property-placeholder location="classpath:mail.properties" />
 
-	<bean id="mail" class="com.sosop.service.mail.vo.Mail" scope="singleton">
-		<property name="propeties">
+	<bean id="sendMail" class="com.sosop.service.mail.action.SendMail" scope="singleton">
+		<constructor-arg name="pro">
 			<props>
 				<prop key="mail.smtp.host">${mail.smtp.host}</prop>
 				<prop key="mail.smtp.port">${mail.smtp.port}</prop>
 				<prop key="mail.smtp.auth">${mail.smtp.auth}</prop>
 				<prop key="mail.transport.procotol">${mail.transport.procotol}</prop>
 				<prop key="from">${from}</prop>
-				<prop key="username">${username}</prop>
-				<prop key="username">${password}</prop>
+				<prop key="account">${account}</prop>
+				<prop key="password">${password}</prop>
 			</props>
-		</property>
+		</constructor-arg>
 	</bean>
 
 </beans>
