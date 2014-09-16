@@ -12,6 +12,7 @@ public class Mail {
 	private String subject;
 	private String content;
 	private String[] attachFileNames;
+	private String type;
 
 	public String[] getAttachFileNames() {
 		return attachFileNames;
@@ -51,5 +52,13 @@ public class Mail {
 
 	public void setContent(String textContent) {
 		this.content = textContent;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
 	}
 }
