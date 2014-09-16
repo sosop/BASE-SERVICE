@@ -31,6 +31,8 @@ public class SendMail {
 
 	private final static Logger LOG = Logger.getLogger(SendMail.class);
 
+	private Authenticator authenticator = null;
+	
 	private Properties pro;
 	
 	public SendMail(Properties pro) {
@@ -145,7 +147,7 @@ public class SendMail {
 			mailMessage.setContent(mainPart);
 			// mailMessage.saveChanges();
 			// Transport transport = sendMailSession.getTransport("smtp");
-			// transport.connect(mailInfo.getMailServerHost(),mailInfo.getUserName(),mailInfo.getPassword());
+			// transport.connect(host, username, password);
 			// transport.sendMessage(mailMessage,
 			// mailMessage.getAllRecipients());
 			// transport.close();
@@ -164,10 +166,17 @@ public class SendMail {
 	 * @return
 	 */
 	private Authenticator auth(Properties pro) {
-		Authenticator authenticator = null;
-		if (Boolean.valueOf(pro.getProperty("mail.smtp.auth", "true"))) {
-			authenticator = new Authenticator(pro.getProperty("account"),
-					pro.getProperty("password"));
+		if(null == this.authenticator) {
+			synchronized(this) {
+				if(null == this.authenticator) {
+					if (Boolean.valueOf(pro.getProperty("mail.smtp.auth", "true"))) {
+						this.authenticator = new Authenticator(pro.getProperty("account"),
+								pro.getProperty("password"));
+					} else {
+						this.authenticator = new Authenticator();
+					}
+				}
+			}
 		}
 		return authenticator;
 	}
