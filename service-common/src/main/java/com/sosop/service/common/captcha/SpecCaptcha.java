@@ -1,4 +1,4 @@
-package com.sosop.service.common.util;
+package com.sosop.service.common.captcha;
 
 import static com.sosop.service.common.util.Randoms.num;
 import java.awt.AlphaComposite;

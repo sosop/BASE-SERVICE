@@ -1,8 +1,10 @@
-package com.sosop.service.common.util;
+package com.sosop.service.common.captcha;
 
 import java.awt.Color;
 import java.awt.Font;
 import java.io.OutputStream;
+
+import com.sosop.service.common.util.Randoms;
 
 /**
  * <p>
