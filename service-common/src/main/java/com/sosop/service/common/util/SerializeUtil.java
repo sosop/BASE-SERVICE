@@ -8,7 +8,14 @@ import java.io.ObjectOutputStream;
 import org.apache.log4j.Logger;
 
 
-
+/**
+ * 
+ * @author sosop
+ * 
+ * 对象序列化
+ *
+ * @param <T>
+ */
 public class SerializeUtil<T> {
 	
 	private Logger logger = Logger.getLogger(SerializeUtil.class);

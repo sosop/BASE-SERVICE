@@ -9,7 +9,7 @@ import java.io.OutputStream;
  * 验证码抽象类,暂时不支持中文
  * </p>
  * 
- * @author: houxiaolong
+ * @author: sosop
  * @version:1.0
  */
 public abstract class Captcha {

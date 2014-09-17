@@ -13,7 +13,7 @@ import org.apache.log4j.Logger;
  */
 public class MD5EncryptUtil {
 	
-	private static Logger logger = Logger.getLogger(MD5EncryptUtil.class);
+	private final static Logger LOG = Logger.getLogger(MD5EncryptUtil.class);
 	
 	/**
 	 * @description 加密的算法
@@ -42,8 +42,7 @@ public class MD5EncryptUtil {
             re_md5 = buf.toString();
  
         } catch (NoSuchAlgorithmException e) {
-            // e.printStackTrace();
-        	logger.error(e.getMessage(), e);
+        	LOG.error(e.getMessage(), e);
         }
         return re_md5;
     }

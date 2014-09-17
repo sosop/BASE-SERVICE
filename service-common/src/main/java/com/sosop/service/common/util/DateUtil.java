@@ -6,10 +6,14 @@ import java.util.Calendar;
 import java.util.Date;
 
 import org.apache.log4j.Logger;
-
+/**
+ * 
+ * @author xiaolong.hou
+ * 日期辅助类
+ */
 public class DateUtil {
 
-	private static Logger logger = Logger.getLogger(DateUtil.class);
+	private final static Logger LOG = Logger.getLogger(DateUtil.class);
 	
 	// 本月的第一天
 	public static String getCurMonthFirstDay() {
@@ -87,8 +91,7 @@ public class DateUtil {
 			c.setTime(d);
 			c.add(Calendar.DATE, step);
 		} catch (ParseException e) {
-			// e.printStackTrace();
-			logger.error(e.getMessage(), e);
+			LOG.error(e.getMessage(), e);
 		}
 		return new SimpleDateFormat(pattern).format(c.getTime());
 	}
@@ -101,8 +104,12 @@ public class DateUtil {
 		return new SimpleDateFormat("yyyy-MM-dd").format(date);
 	}
 	
-	public static String timestamp() {
+	public static String timestampFor() {
 		return format("yyyyMMddHHmmss", new Date());
+	}
+	
+	public static long timestamp() {
+		return System.currentTimeMillis();
 	}
 	
 	public static String timestamp(int start, int len) {
@@ -115,8 +122,7 @@ public class DateUtil {
 		try {
 			 d = new SimpleDateFormat(pattern).parse(date);
 		} catch (ParseException e) {
-			// e.printStackTrace();
-			logger.error(e.getMessage(), e);
+			LOG.error(e.getMessage(), e);
 		}
 		return d;
 	}

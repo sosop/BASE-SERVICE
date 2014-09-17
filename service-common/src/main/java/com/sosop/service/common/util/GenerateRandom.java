@@ -5,7 +5,7 @@ import java.util.UUID;
 
 /**
  * @description 随机生成需要的字符窜
- * @author xiaolong.hou
+ * @author sosop
  * 
  */
 public class GenerateRandom {
@@ -15,8 +15,7 @@ public class GenerateRandom {
 	 * @return
 	 */
 	public static String uuidGenerator() {
-		String uuid = UUID.randomUUID().toString().trim().replaceAll("-", "");
-		return uuid;
+		return UUID.randomUUID().toString().trim();
 	}
 
 	/**

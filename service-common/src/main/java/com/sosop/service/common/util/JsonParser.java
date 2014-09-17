@@ -9,7 +9,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 
 /**
  * 
- * @author xiaolong.hou
+ * @author sosop
  * @date 2014-08-27
  * @version 0.0.1
  * @describe json解析器,主要针对Message的body相应解析

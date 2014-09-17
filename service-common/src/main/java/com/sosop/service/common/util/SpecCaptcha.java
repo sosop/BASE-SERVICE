@@ -21,7 +21,7 @@ import org.apache.log4j.Logger;
  * png格式验证码
  * </p>
  * 
- * @author: houxiaolong
+ * @author: sosop
  * @version:1.0
  */
 public class SpecCaptcha extends Captcha {

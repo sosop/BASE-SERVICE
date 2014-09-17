@@ -1,10 +1,19 @@
 package com.sosop.service.mail.vo;
 
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+
+import com.sosop.service.common.util.StringUtil;
+
 /**
  * 
  * @author sosop
  * @descibe mail类
  */
+@XmlRootElement(name = "mail")
+@XmlAccessorType(XmlAccessType.FIELD)  
 public class Mail {
 
 	private String fromAddress;
@@ -12,8 +21,12 @@ public class Mail {
 	private String subject;
 	private String content;
 	private String[] attachFileNames;
-	private String type;
+	private int type;
 
+	public Mail() {
+		this.type = Respond.TYPE.TYPES[0];
+	}
+	
 	public String[] getAttachFileNames() {
 		return attachFileNames;
 	}
@@ -54,11 +67,15 @@ public class Mail {
 		this.content = textContent;
 	}
 
-	public String getType() {
+	public int getType() {
 		return type;
 	}
 
-	public void setType(String type) {
+	public void setType(int type) {
 		this.type = type;
+	}
+	
+	public boolean legal() {
+		return !StringUtil.isNull(toAddress);
 	}
 }

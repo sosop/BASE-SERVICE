@@ -3,14 +3,21 @@ package com.sosop.service.mail.vo;
 public class Respond {
 	public abstract class STATUS {
 		public final static int SUCCESS_CODE = 200;
-		public final static int NORMAL_CODE  = 0;
+		public final static int UNSEND_CODE  = 0;
 		public final static int FALIUR_CODE  = 500;
 	}
 	
-	public abstract class TYPE {
-		public final static String TEXT_TYPE = "text";
-		public final static String HTML_TYPE = "html";
-		public final static String ATTH_TYPE = "html-attach";
+	public static abstract class TYPE {
+		public final static int[]    TYPES      = {1, 2, 3};
+		public final static String[] TYPES_NAME = {"text", "html", "attach"};
+	}
+	
+	public Respond() {}
+	
+	public Respond(int code, String type) {
+		super();
+		this.code = code;
+		this.type = type;
 	}
 	
 	private int code;
