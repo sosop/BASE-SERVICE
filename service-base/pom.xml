@@ -26,6 +26,7 @@
 		<servlet.version>3.1.0</servlet.version>
 		<jackson.version>1.9.13</jackson.version>
 		<jedis.version>2.5.2</jedis.version>
+		<beanUtils.version>1.9.2</beanUtils.version>
 	</properties>
 
 	<build>
@@ -186,6 +187,14 @@
 				<version>${jedis.version}</version>
 			</dependency>
 			<!-- jedis -->
+
+			<!-- bean utlis -->
+			<dependency>
+				<groupId>commons-beanutils</groupId>
+				<artifactId>commons-beanutils</artifactId>
+				<version>${beanUtils.version}</version>
+			</dependency>
+			<!-- bean utils -->
 
 			<!-- servlet api -->
 			<dependency>

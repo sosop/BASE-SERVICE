@@ -1,14 +1,19 @@
 package com.sosop.service.common.util;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Properties {
 
-	private Map<String, String> container;
+	private Map<String, String> containerMap;
+	
+	private List<String> containerList;
 
 	public Properties() {
-		container = new LinkedHashMap<>();
+		containerMap  = new LinkedHashMap<>();
+		containerList = new ArrayList<>();
 	}
 
 	public void load(String filePath) {
@@ -19,22 +24,27 @@ public class Properties {
 	private void parse(String kvs) {
 		String[] lines = kvs.split("\n");
 		for (String line : lines) {
-			if (!"".equals(line.trim())) {
+			if (!"".equals(line.trim()) && !line.contains("#")) {
+				containerList.add(line);
 				String[] kv = line.split("=");
 				if (kv.length >= 2) {
-					container.put(kv[0].trim(), kv[1].trim());
+					containerMap.put(kv[0].trim(), kv[1].trim());
 				} else {
-					container.put(kv[0], "");
+					containerMap.put(kv[0], "");
 				}
 			}
 		}
 	}
 	
 	public String getValue(String key) {
-		return container.get(key);
+		return containerMap.get(key);
 	}
 	
-	public Map<String, String> getContainer() {
-		return this.container;
+	public Map<String, String> getContainerMap() {
+		return this.containerMap;
+	}
+	
+	public List<String> getContainerList() {
+		return this.containerList;
 	}
 }

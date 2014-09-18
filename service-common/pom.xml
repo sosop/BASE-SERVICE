@@ -67,6 +67,13 @@
 			<artifactId>jackson-mapper-asl</artifactId>
 		</dependency>
 		<!-- jackson -->
+	
+		<!-- bean utils -->
+		<dependency>
+			<groupId>commons-beanutils</groupId>
+			<artifactId>commons-beanutils</artifactId>
+		</dependency>
+		<!-- bean utils -->
 	</dependencies>
 
 </project>
