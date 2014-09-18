@@ -1,5 +1,6 @@
 package com.sosop.service.common.util;
 
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.RandomAccessFile;
@@ -25,7 +26,7 @@ import org.apache.log4j.Logger;
 public class FileUtil {
 
 	private final static Logger LOG = Logger.getLogger(JsonParser.class);
-	
+
 	/**
 	 * 指定路径和内容写入文件
 	 * 
@@ -113,4 +114,32 @@ public class FileUtil {
 		}
 	}
 
+	// 读取文件内容
+	public static String read(String filePath) {
+		StringBuffer sb = new StringBuffer();
+		String baseDir = FileUtil.class.getResource("/").getPath();
+
+		Path path = Paths.get(baseDir, filePath);
+		
+		if(Files.notExists(path, LinkOption.NOFOLLOW_LINKS)) {
+			path = path.getParent().resolveSibling(StringUtil.append("classes/", filePath));
+		}
+
+		try (RandomAccessFile file = new RandomAccessFile(path.toFile(), "r");
+				FileChannel channel = file.getChannel();) {
+			ByteBuffer buf = MappedByteBuffer.allocateDirect(512);
+			while (channel.read(buf) > 0) {
+				buf.flip();
+				while(buf.hasRemaining()) {
+					sb.append((char)buf.get());
+				}
+				buf.clear();
+			}
+		} catch (FileNotFoundException e) {
+			LOG.error(e.getMessage(), e);
+		} catch (IOException e1) {
+			LOG.error(e1.getMessage(), e1);
+		}
+		return sb.toString();
+	}
 }

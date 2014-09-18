@@ -2,22 +2,23 @@ package com.sosop.service.redis;
 
 import java.util.Iterator;
 import java.util.Map.Entry;
-import java.util.Properties;
 
-import com.sosop.service.common.util.PropertiesUtil;
+import com.sosop.service.common.util.Properties;
 
 public class ClusterInfo {
 	
-	private final static String DEFAUL_PATH = "reids-cluster.properties";
+	private final static String DEFAUL_PATH = "redis-cluster.properties";
 	
 	private Properties prop;
 	
 	public ClusterInfo() {
-		this.prop = PropertiesUtil.getProp(DEFAUL_PATH);
+		this.prop = new Properties();
+		prop.load(DEFAUL_PATH);
 	}
 	
 	public ClusterInfo(String path) {
-		this.prop = PropertiesUtil.getProp(path);
+		this.prop = new Properties();
+		prop.load(path);
 	}
 	
 	public ClusterInfo(Properties prop) {
@@ -25,9 +26,8 @@ public class ClusterInfo {
 	}
 	
 	public void config() {
-		Iterator<Entry<Object, Object>> it = prop.entrySet().iterator();
-		while(it.hasNext()) {
-			System.out.println(it.next().getKey() + "  " + it.next().getValue());
+		for (Entry<String, String> entry : prop.getContainer().entrySet()) {
+			System.out.println(entry.getKey() + "  =  " + entry.getValue());
 		}
 	}
 }
