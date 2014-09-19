@@ -6,11 +6,11 @@ package com.sosop.service.common.util;
  */
 public class StringUtil {
 	
-	public static String append(String begin, String ... args) {
-		StringBuffer buf = new StringBuffer(begin);
+	public static String append(Object...args) {
+		StringBuffer buf = new StringBuffer();
 		if(args != null && args.length > 0) {
-			for (String str : args) {
-				buf.append(str);
+			for (Object obj : args) {
+				buf.append(obj);
 			}
 		}
 		return buf.toString();

@@ -14,9 +14,12 @@ import org.apache.log4j.Logger;
 
 import redis.clients.jedis.JedisPoolConfig;
 import redis.clients.jedis.JedisShardInfo;
+import redis.clients.jedis.ShardedJedis;
 
 import com.sosop.service.common.util.Properties;
 import com.sosop.service.common.util.StringUtil;
+import com.sosop.service.redis.rule.DefaultRule;
+import com.sosop.service.redis.rule.Rule;
 
 public class ClusterInfo {
 
@@ -27,19 +30,54 @@ public class ClusterInfo {
 	private Properties prop;
 
 	private List<Cluster> clusters;
+	
+	private Map<String, Cluster> nameMap;
+	
+	private Map<Integer, Cluster> numMap;
+	
+	private Rule rule;
 
 	public ClusterInfo() {
 		this.prop = new Properties();
 		prop.load(DEFAUL_PATH);
+	}
+	
+	public ClusterInfo(Rule rule) {
+		this.prop = new Properties();
+		prop.load(DEFAUL_PATH);
+		this.rule = rule.initial(this);
 	}
 
 	public ClusterInfo(String path) {
 		this.prop = new Properties();
 		prop.load(path);
 	}
+	
+	public ClusterInfo(String path, Rule rule) {
+		this.prop = new Properties();
+		prop.load(path);
+		this.rule = rule.initial(this);
+	}
 
 	public ClusterInfo(Properties prop) {
 		this.prop = prop;
+	}
+	
+	public ClusterInfo(Properties prop, Rule rule) {
+		this.prop = prop;
+		this.rule = rule.initial(this);
+	}
+
+	public List<Cluster> getClusters() {
+		return clusters;
+	}
+
+	public Map<String, Cluster> getNameMap() {
+		return nameMap;
+	}
+
+	public Map<Integer, Cluster> getNumMap() {
+		return numMap;
 	}
 
 	public void config() {
@@ -85,18 +123,55 @@ public class ClusterInfo {
 						Integer.parseInt(info.get(StringUtil.append(serverKey, "port"))),
 						Integer.parseInt(info.get(StringUtil.append(serverKey,"timeout"))), 
 						Integer.parseInt(info.get(StringUtil.append(serverKey, "weight"))));
+				String passwd = info.get(StringUtil.append(serverKey, "password"));
+				if(!StringUtil.isNull(passwd)) {
+					server.setPassword(passwd);
+				}
 				servers.add(server);
 			}
 			cluster.setServers(servers);
+			cluster.wire();
 			
 			// 获得编号和名称
 			cluster.setName(info.get(StringUtil.append("c", String.valueOf(i), ".name")));
 			cluster.setNum(Integer.parseInt(info.get(StringUtil.append("c", String.valueOf(i), ".num"))));
 			
+			// 获得虚拟节点
+			String weight = info.get(StringUtil.append("c", String.valueOf(i), ".weight"));
+			if(!StringUtil.isNull(weight)) {
+				cluster.setNum(Integer.parseInt(weight));
+			}
+			
+			/**
+			 * 添加映射信息
+			 */
+			nameMap.put(cluster.getName(), cluster);
+			numMap.put(cluster.getNum(), cluster);
 			clusters.add(cluster);
+		}
+		if(null == this.rule) {
+			rule = new DefaultRule().initial(this);
 		}
 	}
 
+	public ShardedJedis getJedis(Object key) {
+		return rule.getCluster(key).getJedis();
+	}
+	
+	public ShardedJedis getJedis(String clusterName) {
+		return nameMap.get(clusterName).getJedis();
+	}
+	
+	public ShardedJedis getJedis(int clusterNum) {
+		return numMap.get(clusterNum).getJedis();
+	}
+	
+	/**
+	 * 配置池
+	 * @param config
+	 * @param prefix
+	 * @param map
+	 */
 	private void poolConfig(JedisPoolConfig config, String prefix,
 			Map<String, String> map) {
 

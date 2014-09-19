@@ -17,15 +17,22 @@ import redis.clients.jedis.ShardedJedisPool;
  * 
  */
 public class Cluster {
+	
+	public final static int DEFAULT_WEIGHT = 10;
+	
 	private String name;
 
 	private int num;
+	
+	private int weight;
+	
 
 	private ShardedJedisPool pool;
 	private JedisPoolConfig config;
 	private List<JedisShardInfo> servers;
 
 	public Cluster() {
+		this.weight = DEFAULT_WEIGHT;
 	}
 
 	public Cluster(String name, JedisPoolConfig config,
@@ -33,8 +40,12 @@ public class Cluster {
 		this.name = name;
 		this.config = config;
 		this.servers = servers;
+		this.weight = DEFAULT_WEIGHT;
 	}
 
+	/**
+	 * 配置集群资源
+	 */
 	public void wire() {
 		if (null == pool) {
 			synchronized (this) {
@@ -67,6 +78,14 @@ public class Cluster {
 
 	public void setServers(List<JedisShardInfo> servers) {
 		this.servers = servers;
+	}
+
+	public int getWeight() {
+		return weight;
+	}
+
+	public void setWeight(int weight) {
+		this.weight = weight;
 	}
 
 	public ShardedJedis getJedis() {
