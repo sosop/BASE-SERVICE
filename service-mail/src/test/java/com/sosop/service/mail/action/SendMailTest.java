@@ -26,7 +26,8 @@ public class SendMailTest extends AbstractJUnit4SpringContextTests {
 		mail.setToAddress(new String[]{"sosopish@163.com"});
 		mail.setSubject("it's a test");
 		mail.setContent("<h1>I'm testing mail service</h1>");
-		mail.setAttachFileNames(new String[]{"/data/mail"});
+		// mail.setAttachFileNames(new String[]{"/data/mail"});
+		mail.setAttachFileNames(new String[]{"D:\\mail.txt"});
 	}
 	
 	@Test

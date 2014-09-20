@@ -119,10 +119,16 @@ public class FileUtil {
 		StringBuffer sb = new StringBuffer();
 		String baseDir = FileUtil.class.getResource("/").getPath();
 
-		Path path = Paths.get(baseDir, filePath);
+		String fullPath = StringUtil.append(baseDir, filePath);
 		
-		if(Files.notExists(path, LinkOption.NOFOLLOW_LINKS)) {
-			path = path.getParent().resolveSibling(StringUtil.append("classes/", filePath));
+		fullPath = System.getProperty("os.name").contains("indow") ? fullPath
+				.substring(1) : fullPath;
+
+		Path path = Paths.get(fullPath);
+
+		if (Files.notExists(path, LinkOption.NOFOLLOW_LINKS)) {
+			path = path.getParent().resolveSibling(
+					StringUtil.append("classes/", filePath));
 		}
 
 		try (RandomAccessFile file = new RandomAccessFile(path.toFile(), "r");
@@ -130,8 +136,8 @@ public class FileUtil {
 			ByteBuffer buf = MappedByteBuffer.allocateDirect(512);
 			while (channel.read(buf) > 0) {
 				buf.flip();
-				while(buf.hasRemaining()) {
-					sb.append((char)buf.get());
+				while (buf.hasRemaining()) {
+					sb.append((char) buf.get());
 				}
 				buf.clear();
 			}
