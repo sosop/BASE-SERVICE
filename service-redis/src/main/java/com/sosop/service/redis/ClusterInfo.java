@@ -4,6 +4,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -82,6 +83,8 @@ public class ClusterInfo {
 
 	public void config() {
 		clusters = new ArrayList<>();
+		nameMap  = new HashMap<>();
+		numMap   = new HashMap<>();
 
 		Map<String, String> info = prop.getContainerMap();
 
@@ -108,16 +111,17 @@ public class ClusterInfo {
 				cluster.setConfig(shareConfig);
 			} else {
 				JedisPoolConfig config = new JedisPoolConfig();
-				poolConfig(config, StringUtil.append("c", String.valueOf(i)),
+				poolConfig(config, StringUtil.append("c", i),
 						info);
+				cluster.setConfig(config);
 			}
 			// 获取 server 数量
 			List<JedisShardInfo> servers = new ArrayList<>();
 			int serverCount = Integer.parseInt(info.get(StringUtil.append("c",
-					String.valueOf(i), ".server.count")));
+					i, ".server.count")));
 			for (int j = 1; j <= serverCount; j++) {
-				String serverKey = StringUtil.append("c", String.valueOf(i),
-						".s", String.valueOf(j), ".");
+				String serverKey = StringUtil.append("c", i,
+						".s", j, ".");
 				JedisShardInfo server = new JedisShardInfo(
 						info.get(StringUtil.append(serverKey, "host")), 
 						Integer.parseInt(info.get(StringUtil.append(serverKey, "port"))),
@@ -133,11 +137,11 @@ public class ClusterInfo {
 			cluster.wire();
 			
 			// 获得编号和名称
-			cluster.setName(info.get(StringUtil.append("c", String.valueOf(i), ".name")));
-			cluster.setNum(Integer.parseInt(info.get(StringUtil.append("c", String.valueOf(i), ".num"))));
+			cluster.setName(info.get(StringUtil.append("c", i, ".name")));
+			cluster.setNum(Integer.parseInt(info.get(StringUtil.append("c", i, ".num"))));
 			
 			// 获得虚拟节点
-			String weight = info.get(StringUtil.append("c", String.valueOf(i), ".weight"));
+			String weight = info.get(StringUtil.append("c", i, ".weight"));
 			if(!StringUtil.isNull(weight)) {
 				cluster.setNum(Integer.parseInt(weight));
 			}

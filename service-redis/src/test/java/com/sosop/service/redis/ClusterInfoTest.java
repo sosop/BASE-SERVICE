@@ -3,6 +3,7 @@ package com.sosop.service.redis;
 import org.junit.Before;
 import org.junit.Test;
 
+
 public class ClusterInfoTest {
 	
 	private ClusterInfo info;

@@ -67,13 +67,20 @@
 			<artifactId>jackson-mapper-asl</artifactId>
 		</dependency>
 		<!-- jackson -->
-	
+
 		<!-- bean utils -->
 		<dependency>
 			<groupId>commons-beanutils</groupId>
 			<artifactId>commons-beanutils</artifactId>
 		</dependency>
 		<!-- bean utils -->
+
+		<!-- cglib -->
+		<dependency>
+			<groupId>cglib</groupId>
+			<artifactId>cglib</artifactId>
+		</dependency>
+		<!-- cglib -->
 	</dependencies>
 
 </project>
